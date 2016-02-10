@@ -32,6 +32,7 @@ def cert_audit(appliances=[],
                delay=0.5,
                date_time_format="%A, %B %d, %Y, %X",
                localtime=False,
+               days_only=False,
                web=False):
     """Perform an audit of all CryptoCertificate objects which are
 up and enabled for the specified appliances and domains.
@@ -77,6 +78,8 @@ it is a good idea to increase this parameter.
 for information on using this parameter
 * `-l, --localtime`: If specified, the date-timestamps will be output in
 local time instead of UTC.
+* `--days-only`: If specified, only the number of days (floored) will be
+reported in the `time-since-expiration` and `time-until-expiration` columns.
 * `-w, --web`: __For Internel Use Only, will be removed in future versions.
 DO NOT USE.__"""
     logger = make_logger("cert-audit")
@@ -204,9 +207,17 @@ DO NOT USE.__"""
 
                 if _cert.has_expired():
                     time_since_expiration = datetime.utcnow().replace(tzinfo=utc_tz) - notAfter_utc
+                    if days_only:
+                        time_since_expiration = time_since_expiration.days
+                    else:
+                        time_since_expiration = str(time_since_expiration)
                     time_until_expiration = 0
                 else:
                     time_until_expiration = notAfter_utc - datetime.utcnow().replace(tzinfo=utc_tz)
+                    if days_only:
+                        time_until_expiration = time_until_expiration.days
+                    else:
+                        time_until_expiration = str(time_until_expiration)
                     time_since_expiration = 0
                 row.extend(
                     [subject,
@@ -214,8 +225,8 @@ DO NOT USE.__"""
                      notAfter,
                      issuer,
                      str(_cert.has_expired()),
-                     str(time_since_expiration),
-                     str(time_until_expiration)])
+                     time_since_expiration,
+                     time_until_expiration])
                 rows.append(row)
                 sleep(delay)
 
