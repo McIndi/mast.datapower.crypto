@@ -167,11 +167,12 @@ DO NOT USE.__"""
                 except UnboundLocalError:
                     # This most likely means the file did not exist for
                     # some reason (skip)
+                    if not web:
+                        print "SKIPPING CERT"
                     continue
                 except:
                     logger.exception("An unhandled exception has occurred")
                     if not web:
-                        print appliance.history
                         print "SKIPPING CERT"
                     continue
                 cert = etree.fromstring(cert)
