@@ -494,14 +494,9 @@ DO NOT USE.__"""
                                          File="temporary:///{}".format(name))
                     logger.info(
                         "Finished deleting file temporary:///{}".format(name))
-                except UnboundLocalError:
-                    # This most likely means the file did not exist
-                    # for some reason (skip)
-                    continue
                 except:
                     logger.exception("An unhandled exception has occurred")
                     if not web:
-                        print appliance.history
                         print "SKIPPING CERT"
                     continue
                 cert = etree.fromstring(cert)
