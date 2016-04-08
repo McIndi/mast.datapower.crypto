@@ -19,6 +19,8 @@ from functools import partial, update_wrapper
 from dateutil import parser, tz, relativedelta
 import mast.plugin_utils.plugin_functions as pf
 
+__version__ = "{}-0".format(os.environ["MAST_VERSION"])
+
 cli = commandr.Commandr()
 
 
