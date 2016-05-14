@@ -448,6 +448,12 @@ DO NOT USE.__"""
             # Get a list of all certificates in this domain
             config = appliance.get_config("CryptoCertificate", domain=domain)
             certs = [x for x in config.xml.findall(datapower.CONFIG_XPATH)]
+
+            # Filter out disabled objects because the results won't change,
+            # but we will perform less network traffic
+            certs = filter(
+                lambda x: x.find("mAdminState").text == "enabled",
+                certs)
             if not certs:
                 continue
 
