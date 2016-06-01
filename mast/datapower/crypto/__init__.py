@@ -104,6 +104,7 @@ DO NOT USE.__"""
         "domain",
         "certificate-object",
         "filename",
+        "serial-number",
         "subject",
         "not_before",
         "not_after",
@@ -189,6 +190,7 @@ DO NOT USE.__"""
                     ";".join(
                         ["=".join(x)
                          for x in _cert.get_issuer().get_components()]))
+                serial_number = _cert.get_serial_number()
                 local_tz = tz.tzlocal()
                 utc_tz = tz.tzutc()
                 notBefore_utc = parser.parse(_cert.get_notBefore())
@@ -218,7 +220,8 @@ DO NOT USE.__"""
                         time_until_expiration = str(time_until_expiration)
                     time_since_expiration = 0
                 row.extend(
-                    [subject,
+                    [serial_number,
+                     subject,
                      notBefore,
                      notAfter,
                      issuer,
