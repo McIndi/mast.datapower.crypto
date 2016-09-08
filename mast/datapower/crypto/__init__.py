@@ -106,6 +106,7 @@ DO NOT USE.__"""
         "filename",
         "serial-number",
         "subject",
+        "signature_algorithm",
         "not_before",
         "not_after",
         "issuer",
@@ -191,6 +192,7 @@ DO NOT USE.__"""
                         ["=".join(x)
                          for x in _cert.get_issuer().get_components()]))
                 serial_number = _cert.get_serial_number()
+                signature_algorithm = _cert.get_signature_algorithm()
                 local_tz = tz.tzlocal()
                 utc_tz = tz.tzutc()
                 notBefore_utc = parser.parse(_cert.get_notBefore())
@@ -222,6 +224,7 @@ DO NOT USE.__"""
                 row.extend(
                     [serial_number,
                      subject,
+                     signature_algorithm,
                      notBefore,
                      notAfter,
                      issuer,
