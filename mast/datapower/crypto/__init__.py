@@ -192,7 +192,10 @@ DO NOT USE.__"""
                         ["=".join(x)
                          for x in _cert.get_issuer().get_components()]))
                 serial_number = _cert.get_serial_number()
-                signature_algorithm = _cert.get_signature_algorithm()
+                try:
+                    signature_algorithm = _cert.get_signature_algorithm()
+                except AttributeError:
+                    signature_algorithm = ""
                 local_tz = tz.tzlocal()
                 utc_tz = tz.tzutc()
                 notBefore_utc = parser.parse(_cert.get_notBefore())
